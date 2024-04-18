@@ -5,7 +5,7 @@ MPU6050DATATYPE Mpu6050_Data;
 
 int8_t Sensor_I2C2_Read(uint16_t DevAddr, uint16_t MemAddr, uint8_t *oData, uint8_t DataLen)
 {
-	return HAL_I2C_Mem_Read(&hi2c2,DevAddr|1,MemAddr,1,oData,DataLen,1000);
+	return HAL_I2C_Mem_Read(&hi2c2,DevAddr|0x01,MemAddr,1,oData,DataLen,1000);
 }
 
 int8_t Sensor_I2C2_Write(uint16_t DevAddr, uint16_t MemAddr, uint8_t *iData, uint8_t DataLen)
@@ -71,7 +71,7 @@ void MPU6050_Read_Gyro(void)
 	uint8_t Read_Buf[6];
 	
 	// 寄存器依次是角度X高 - 角度X低 - 角度Y高位 - 角度Y低位 - 角度Z高位 - 角度Z低位
-	Sensor_I2C2_Read(MPU6050_READ_ADDR, GYRO_XOUT_H, Read_Buf, 6); 
+	Sensor_I2C2_Read(MPU6050_ADDR, GYRO_XOUT_H, Read_Buf, 6); 
 	
 	Mpu6050_Data.Gyro_X = (int16_t)(Read_Buf[0] << 8 | Read_Buf[1]);
 	Mpu6050_Data.Gyro_Y = (int16_t)(Read_Buf[2] << 8 | Read_Buf[3]);
@@ -86,7 +86,7 @@ void MPU6050_Read_Temp(void)
 {
     uint8_t Read_Buf[2];
 	
-	Sensor_I2C2_Read(MPU6050_READ_ADDR, TEMP_OUT_H, Read_Buf, 2); 
+	Sensor_I2C2_Read(MPU6050_ADDR, TEMP_OUT_H, Read_Buf, 2); 
 	
 	Mpu6050_Data.Temp = (int16_t)(Read_Buf[0] << 8 | Read_Buf[1]);
 	
